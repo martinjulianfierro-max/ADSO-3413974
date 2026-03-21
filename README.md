@@ -16,9 +16,6 @@ CODE_ORGANIZATION: code-sena
   <img src="https://komarev.com/ghpvc/?username=martinjulianfierro-max&label=Profile%20views&style=flat-square&color=brightgreen" alt="Profile views">
 </p>
 
-<h2 align="center">
-  <span style="color:limegreen;">ADSO-3413974</span>
-</h2>
 
 # ADSO-3413974
 ADSO-3413974
