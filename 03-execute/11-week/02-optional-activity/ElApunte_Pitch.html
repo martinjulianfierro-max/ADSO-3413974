@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Apunte – Pitch</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0D2340;
+    --green: #1A7A4A;
+    --green-light: #2FAF6A;
+    --cream: #F6F4EE;
+    --white: #FFFFFF;
+    --gray: #8A9BAD;
+    --slide-w: 960px;
+    --slide-h: 540px;
+  }
+
+  body {
+    background: #0a0a0a;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    user-select: none;
+  }
+
+  /* ─── Timer Bar ─── */
+  #timer-bar {
+    width: var(--slide-w);
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 4px;
+    color: #555;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  #timer-display {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--green-light);
+    letter-spacing: 2px;
+  }
+  #progress-track {
+    flex: 1; margin: 0 16px; height: 3px;
+    background: #222; border-radius: 2px; overflow: hidden;
+  }
+  #progress-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--green), var(--green-light));
+    transition: width 1s linear;
+  }
+  .slide-counter { color: #555; font-size: 13px; }
+
+  /* ─── Slide Stage ─── */
+  #stage {
+    width: var(--slide-w);
+    max-width: 100%;
+    aspect-ratio: 16/9;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 40px 120px rgba(0,0,0,.7);
+    cursor: pointer;
+  }
+
+  /* ─── Slides ─── */
+  .slide {
+    position: absolute; inset: 0;
+    opacity: 0; pointer-events: none;
+    transition: opacity .6s cubic-bezier(.4,0,.2,1);
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  /* ─── SLIDE 0: Cover ─── */
+  #s0 {
+    background: var(--navy);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  #s0 .bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(26,122,74,.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,122,74,.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  #s0 .accent-circle {
+    position: absolute; width: 500px; height: 500px;
+    border-radius: 50%; border: 1px solid rgba(26,122,74,.15);
+    right: -120px; top: -120px;
+  }
+  #s0 .accent-circle2 {
+    position: absolute; width: 300px; height: 300px;
+    border-radius: 50%; border: 1px solid rgba(26,122,74,.12);
+    left: -80px; bottom: -80px;
+  }
+  #s0 .title {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(56px, 10vw, 96px); color: var(--white);
+    letter-spacing: -2px; line-height: 1; position: relative;
+    animation: fadeUp .8s .2s both;
+  }
+  #s0 .sub {
+    font-size: clamp(13px, 2vw, 18px); color: var(--green-light);
+    margin-top: 12px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 500; position: relative;
+    animation: fadeUp .8s .4s both;
+  }
+  #s0 .tagline {
+    margin-top: 32px; font-size: clamp(12px, 1.5vw, 15px);
+    color: rgba(255,255,255,.4); position: relative;
+    animation: fadeUp .8s .6s both;
+  }
+  #s0 .cta {
+    margin-top: 48px; padding: 14px 36px;
+    background: var(--green); color: white;
+    border: none; border-radius: 40px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; position: relative;
+    animation: fadeUp .8s .8s both;
+    transition: background .2s, transform .2s;
+  }
+  #s0 .cta:hover { background: var(--green-light); transform: translateY(-2px); }
+
+  /* ─── SLIDE 1: Problema ─── */
+  #s1 { background: var(--cream); display: flex; flex-direction: column; justify-content: center; padding: 52px 60px; }
+  #s1 .label { font-size: 11px; letter-spacing: 4px; color: var(--green); text-transform: uppercase; font-weight: 500; margin-bottom: 8px; }
+  #s1 .h1 { font-family: 'Syne', sans-serif; font-size: clamp(28px,5vw,44px); font-weight: 800; color: var(--navy); line-height: 1.1; margin-bottom: 36px; }
+  .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .prob-card {
+    background: white; border-radius: 12px; padding: 22px 24px;
+    display: flex; align-items: flex-start; gap: 14px;
+    border: 1px solid rgba(0,0,0,.06);
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  }
+  .prob-card .icon { font-size: 28px; line-height: 1; flex-shrink: 0; }
+  .prob-card .text strong { display: block; font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .prob-card .text span { font-size: 12px; color: #777; line-height: 1.4; }
+
+  /* ─── SLIDE 2: Solución ─── */
+  #s2 { background: var(--navy); display: flex; flex-direction: column; justify-content: center; padding: 52px 60px; overflow: hidden; }
+  #s2 .bg-dot {
+    position: absolute; width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,122,74,.18) 0%, transparent 70%);
+    right: -80px; top: 50%; transform: translateY(-50%);
+  }
+  #s2 .label { font-size: 11px; letter-spacing: 4px; color: var(--green-light); text-transform: uppercase; font-weight: 500; margin-bottom: 8px; position: relative; }
+  #s2 .h1 { font-family: 'Syne', sans-serif; font-size: clamp(28px,5vw,44px); font-weight: 800; color: var(--white); line-height: 1.1; margin-bottom: 36px; position: relative; }
+  .solution-list { display: flex; flex-direction: column; gap: 14px; position: relative; }
+  .sol-item {
+    display: flex; align-items: center; gap: 16px;
+    background: rgba(255,255,255,.05); border-radius: 10px; padding: 16px 20px;
+    border: 1px solid rgba(255,255,255,.06);
+  }
+  .sol-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--green); color: white;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 14px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sol-item strong { font-size: 14px; color: white; }
+  .sol-item span { font-size: 12px; color: rgba(255,255,255,.5); margin-left: 8px; }
+
+  /* ─── SLIDE 3: Funciones Clave ─── */
+  #s3 { background: var(--cream); display: flex; flex-direction: column; justify-content: center; padding: 48px 60px; }
+  #s3 .label { font-size: 11px; letter-spacing: 4px; color: var(--green); text-transform: uppercase; font-weight: 500; margin-bottom: 8px; }
+  #s3 .h1 { font-family: 'Syne', sans-serif; font-size: clamp(24px,4vw,38px); font-weight: 800; color: var(--navy); margin-bottom: 32px; }
+  .feat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .feat-card {
+    background: white; border-radius: 14px; padding: 24px 16px;
+    text-align: center; border: 1px solid rgba(0,0,0,.06);
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .feat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+  .feat-card .icon { font-size: 32px; margin-bottom: 12px; }
+  .feat-card strong { display: block; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .feat-card p { font-size: 11px; color: #888; line-height: 1.4; }
+  .feat-card .tag { display: inline-block; margin-top: 10px; padding: 3px 10px; background: rgba(26,122,74,.1); color: var(--green); font-size: 10px; border-radius: 20px; font-weight: 500; }
+
+  /* ─── SLIDE 4: Plan ─── */
+  #s4 { background: var(--navy); display: flex; flex-direction: column; justify-content: center; padding: 48px 60px; }
+  #s4 .label { font-size: 11px; letter-spacing: 4px; color: var(--green-light); text-transform: uppercase; font-weight: 500; margin-bottom: 8px; }
+  #s4 .h1 { font-family: 'Syne', sans-serif; font-size: clamp(24px,4vw,36px); font-weight: 800; color: white; margin-bottom: 32px; }
+  .timeline { display: flex; gap: 0; }
+  .t-phase { flex: 1; position: relative; }
+  .t-phase::after {
+    content: ''; position: absolute; top: 20px; left: 50%; right: -50%;
+    height: 2px; background: rgba(255,255,255,.1); z-index: 0;
+  }
+  .t-phase:last-child::after { display: none; }
+  .t-dot {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,.06); border: 2px solid rgba(255,255,255,.15);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 10px; position: relative; z-index: 1;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; color: rgba(255,255,255,.5);
+  }
+  .t-phase.done .t-dot { background: var(--green); border-color: var(--green); color: white; }
+  .t-phase.active .t-dot { background: rgba(26,122,74,.3); border-color: var(--green-light); color: var(--green-light); }
+  .t-label { text-align: center; font-size: 11px; font-weight: 700; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: 1px; }
+  .t-phase.done .t-label { color: var(--green-light); }
+  .t-phase.active .t-label { color: white; }
+  .t-desc { text-align: center; font-size: 10px; color: rgba(255,255,255,.25); margin-top: 4px; line-height: 1.3; }
+  .t-phase.done .t-desc, .t-phase.active .t-desc { color: rgba(255,255,255,.5); }
+  .phases-row { display: flex; gap: 10px; margin-top: 24px; }
+  .phase-block {
+    flex: 1; border-radius: 10px; padding: 14px 12px;
+    border: 1px solid rgba(255,255,255,.06);
+  }
+  .phase-block.f1 { background: rgba(26,122,74,.12); border-color: rgba(26,122,74,.2); }
+  .phase-block.f2 { background: rgba(255,255,255,.04); }
+  .phase-block.f3 { background: rgba(26,122,74,.08); border-color: rgba(26,122,74,.15); }
+  .phase-block .ph-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--green-light); font-weight: 700; margin-bottom: 6px; }
+  .phase-block .ph-meses { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 800; color: white; }
+  .phase-block .ph-desc { font-size: 10px; color: rgba(255,255,255,.4); margin-top: 4px; line-height: 1.4; }
+
+  /* ─── SLIDE 5: Cierre ─── */
+  #s5 { background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+  #s5 .bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(26,122,74,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,122,74,.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  #s5 .big { font-family: 'Syne', sans-serif; font-size: clamp(32px,6vw,58px); font-weight: 800; color: white; line-height: 1.1; position: relative; }
+  #s5 .big em { color: var(--green-light); font-style: normal; }
+  #s5 .sub2 { font-size: clamp(11px,1.5vw,14px); color: rgba(255,255,255,.4); margin-top: 16px; letter-spacing: 2px; text-transform: uppercase; position: relative; }
+  .benefit-chips { display: flex; gap: 12px; margin-top: 36px; position: relative; }
+  .chip {
+    padding: 10px 20px; border-radius: 40px;
+    border: 1px solid rgba(255,255,255,.12);
+    font-size: 13px; color: rgba(255,255,255,.7);
+    background: rgba(255,255,255,.04);
+  }
+  .chip.hi { background: rgba(26,122,74,.2); border-color: rgba(26,122,74,.4); color: var(--green-light); }
+
+  /* ─── Controls ─── */
+  #controls {
+    width: var(--slide-w); max-width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    padding: 16px 4px;
+  }
+  .ctrl-btn {
+    background: #1a1a1a; border: 1px solid #333; color: #aaa;
+    padding: 10px 24px; border-radius: 8px; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; cursor: pointer; transition: all .2s;
+  }
+  .ctrl-btn:hover { background: #222; color: white; border-color: var(--green); }
+  .ctrl-btn:disabled { opacity: .3; cursor: default; }
+  #dots { display: flex; gap: 8px; }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #333;
+    cursor: pointer; transition: all .3s;
+  }
+  .dot.on { background: var(--green-light); width: 24px; border-radius: 4px; }
+  #timer-toggle {
+    background: #1a1a1a; border: 1px solid #333; color: #888;
+    padding: 8px 16px; border-radius: 8px; font-size: 12px; cursor: pointer;
+    transition: all .2s; font-family: 'DM Sans', sans-serif;
+  }
+  #timer-toggle.running { border-color: var(--green); color: var(--green-light); }
+
+  /* ─── Speaker Notes ─── */
+  #notes-bar {
+    width: var(--slide-w); max-width: 100%;
+    background: #111; border: 1px solid #222; border-radius: 10px;
+    padding: 14px 20px; margin-top: 4px;
+  }
+  #notes-bar .notes-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #444; margin-bottom: 6px; }
+  #notes-text { font-size: 13px; color: #777; line-height: 1.6; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Slide enter animations */
+  .slide.active .prob-card,
+  .slide.active .feat-card,
+  .slide.active .sol-item {
+    animation: fadeUp .5s both;
+  }
+  .slide.active .prob-card:nth-child(1) { animation-delay: .1s; }
+  .slide.active .prob-card:nth-child(2) { animation-delay: .2s; }
+  .slide.active .prob-card:nth-child(3) { animation-delay: .3s; }
+  .slide.active .prob-card:nth-child(4) { animation-delay: .4s; }
+  .slide.active .feat-card:nth-child(1) { animation-delay: .1s; }
+  .slide.active .feat-card:nth-child(2) { animation-delay: .2s; }
+  .slide.active .feat-card:nth-child(3) { animation-delay: .3s; }
+  .slide.active .feat-card:nth-child(4) { animation-delay: .4s; }
+  .slide.active .sol-item:nth-child(1) { animation-delay: .15s; }
+  .slide.active .sol-item:nth-child(2) { animation-delay: .28s; }
+  .slide.active .sol-item:nth-child(3) { animation-delay: .41s; }
+  .slide.active .sol-item:nth-child(4) { animation-delay: .54s; }
+</style>
+</head>
+<body>
+
+<!-- Timer Bar -->
+<div id="timer-bar">
+  <div id="timer-display">03:00</div>
+  <div id="progress-track"><div id="progress-fill"></div></div>
+  <span class="slide-counter" id="slide-counter">Diapositiva 1 / 6</span>
+</div>
+
+<!-- Stage -->
+<div id="stage">
+
+  <!-- SLIDE 0: Cover -->
+  <div class="slide active" id="s0">
+    <div class="bg-grid"></div>
+    <div class="accent-circle"></div>
+    <div class="accent-circle2"></div>
+    <div class="title">EL APUNTE</div>
+    <div class="sub">Transformación digital para tu tienda de barrio</div>
+    <div class="tagline">Kevin Santiago Saavedra Chantris · SENA 2026 · Ficha 3413974</div>
+    <button class="cta" onclick="goTo(1)">Comenzar presentación →</button>
+  </div>
+
+  <!-- SLIDE 1: Problema -->
+  <div class="slide" id="s1">
+    <div class="label">El Problema</div>
+    <div class="h1">¿Por qué necesitan<br>una solución digital?</div>
+    <div class="problem-grid">
+      <div class="prob-card">
+        <div class="icon">📓</div>
+        <div class="text">
+          <strong>Ventas manuales</strong>
+          <span>Registro en cuadernos propenso a pérdida de información</span>
+        </div>
+      </div>
+      <div class="prob-card">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Errores de cálculo</strong>
+          <span>Totales, cambio y cierres de caja incorrectos a diario</span>
+        </div>
+      </div>
+      <div class="prob-card">
+        <div class="icon">📦</div>
+        <div class="text">
+          <strong>Inventario caótico</strong>
+          <span>Sin alertas de stock: productos se agotan sin aviso previo</span>
+        </div>
+      </div>
+      <div class="prob-card">
+        <div class="icon">⏱️</div>
+        <div class="text">
+          <strong>Pérdida de tiempo</strong>
+          <span>Demoras en atención y en la consulta de información histórica</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Solución -->
+  <div class="slide" id="s2">
+    <div class="bg-dot"></div>
+    <div class="label">La Solución</div>
+    <div class="h1">Plataforma web y móvil<br>para gestión integral</div>
+    <div class="solution-list">
+      <div class="sol-item">
+        <div class="sol-num">1</div>
+        <div><strong>Control de ventas</strong><span>– Registro rápido con cálculo automático de total y cambio</span></div>
+      </div>
+      <div class="sol-item">
+        <div class="sol-num">2</div>
+        <div><strong>Inventario inteligente</strong><span>– Stock en tiempo real con alertas de agotamiento</span></div>
+      </div>
+      <div class="sol-item">
+        <div class="sol-num">3</div>
+        <div><strong>Gestión de fiados</strong><span>– Perfiles de clientes con saldo pendiente actualizado</span></div>
+      </div>
+      <div class="sol-item">
+        <div class="sol-num">4</div>
+        <div><strong>Dashboard gerencial</strong><span>– Reportes automáticos para tomar decisiones con datos</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Funciones Clave -->
+  <div class="slide" id="s3">
+    <div class="label">Funciones Clave</div>
+    <div class="h1">¿Qué puede hacer el sistema?</div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="icon">⚡</div>
+        <strong>Ventas Rápidas</strong>
+        <p>Menú visual de productos con cálculo automático</p>
+        <div class="tag">RF-01 al RF-07</div>
+      </div>
+      <div class="feat-card">
+        <div class="icon">🎯</div>
+        <strong>Stock Real</strong>
+        <p>Inventario sincronizado con alertas inmediatas</p>
+        <div class="tag">RF-08 al RF-11</div>
+      </div>
+      <div class="feat-card">
+        <div class="icon">🤝</div>
+        <strong>Fiados</strong>
+        <p>Cuentas por cobrar con historial por cliente</p>
+        <div class="tag">RF-14 al RF-16</div>
+      </div>
+      <div class="feat-card">
+        <div class="icon">📊</div>
+        <strong>Reportes</strong>
+        <p>Indicadores diarios y mensuales para decidir mejor</p>
+        <div class="tag">RF-17 al RF-19</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Plan -->
+  <div class="slide" id="s4">
+    <div class="label">Plan de Ejecución</div>
+    <div class="h1">6 meses · 3 fases estratégicas</div>
+    <div class="phases-row">
+      <div class="phase-block f1">
+        <div class="ph-label">Fase I</div>
+        <div class="ph-meses">Mes 1 – 2</div>
+        <div class="ph-desc">Análisis, diseño UI/UX y módulo Core: Ventas e Inventario</div>
+      </div>
+      <div class="phase-block f2">
+        <div class="ph-label">Fase II</div>
+        <div class="ph-meses">Mes 3 – 4</div>
+        <div class="ph-desc">Proveedores, módulo de Fiados y sincronización móvil Android</div>
+      </div>
+      <div class="phase-block f3">
+        <div class="ph-label">Fase III</div>
+        <div class="ph-meses">Mes 5 – 6</div>
+        <div class="ph-desc">Dashboard, seguridad HTTPS, pruebas QA y entrega final</div>
+      </div>
+    </div>
+    <div style="margin-top:20px; display:flex; gap:24px;">
+      <div style="color:rgba(255,255,255,.5); font-size:12px;">🔒 <span style="color:rgba(255,255,255,.7)">Seguridad:</span> Autenticación + HTTPS</div>
+      <div style="color:rgba(255,255,255,.5); font-size:12px;">📱 <span style="color:rgba(255,255,255,.7)">Plataformas:</span> Web + Android</div>
+      <div style="color:rgba(255,255,255,.5); font-size:12px;">⚙️ <span style="color:rgba(255,255,255,.7)">Arquitectura:</span> REST API + BD Relacional</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Cierre -->
+  <div class="slide" id="s5">
+    <div class="bg-grid"></div>
+    <div class="big">Del cuaderno<br>a <em>la nube.</em></div>
+    <div class="sub2">El futuro de tu negocio comienza hoy</div>
+    <div class="benefit-chips">
+      <div class="chip hi">⏱ Ahorro de tiempo</div>
+      <div class="chip">✓ Cero errores manuales</div>
+      <div class="chip">📦 Mejor organización</div>
+      <div class="chip hi">📈 Decisiones inteligentes</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Controls -->
+<div id="controls">
+  <button class="ctrl-btn" id="btn-prev" onclick="prev()" disabled>← Anterior</button>
+  <div id="dots"></div>
+  <button class="ctrl-btn" id="btn-next" onclick="next()">Siguiente →</button>
+  <button id="timer-toggle" onclick="toggleTimer()">▶ Iniciar temporizador</button>
+</div>
+
+<!-- Speaker Notes -->
+<div id="notes-bar">
+  <div class="notes-label">Notas del presentador</div>
+  <div id="notes-text"></div>
+</div>
+
+<script>
+  const TOTAL = 6;
+  const TOTAL_SECS = 180; // 3 min
+  let current = 0;
+  let timerSecs = TOTAL_SECS;
+  let timerRunning = false;
+  let timerInterval = null;
+
+  const notes = [
+    "Presentate brevemente. 'Buenos días/tardes. Soy Kevin Saavedra y les voy a presentar El Apunte, un sistema de gestión para transformar digitalmente las tiendas de barrio.'",
+    "Contextualiza el problema. 'Supermercado La Esquina: todo se hace a mano. Cuadernos, errores, caos. Esto limita su crecimiento y genera pérdidas económicas reales.'",
+    "Presenta la solución con confianza. 'El Apunte es una plataforma web y móvil que automatiza las 4 operaciones más críticas del negocio, accesible desde cualquier dispositivo.'",
+    "Destaca 2 funciones estrella: ventas rápidas y control de fiados. Son las que más impactan en el día a día del tendero. Menciona que todo está conectado en tiempo real.",
+    "Muestra que hay un plan claro. 'No es solo una idea: tiene cronograma, fases y entregables definidos. En 6 meses el negocio opera completamente digitalizado.'",
+    "Cierra con energía. 'La transformación digital de las tiendas de barrio no es el futuro, es el presente. El Apunte hace ese puente accesible para cualquier tendero en Colombia.'",
+  ];
+
+  function buildDots() {
+    const c = document.getElementById('dots');
+    c.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === current ? ' on' : '');
+      d.onclick = () => goTo(i);
+      c.appendChild(d);
+    }
+  }
+
+  function goTo(n) {
+    document.querySelectorAll('.slide').forEach((s, i) => {
+      s.classList.toggle('active', i === n);
+    });
+    current = n;
+    document.getElementById('btn-prev').disabled = current === 0;
+    document.getElementById('btn-next').disabled = current === TOTAL - 1;
+    document.getElementById('slide-counter').textContent = `Diapositiva ${current + 1} / ${TOTAL}`;
+    document.getElementById('notes-text').textContent = notes[current];
+    buildDots();
+  }
+
+  function next() { if (current < TOTAL - 1) goTo(current + 1); }
+  function prev() { if (current > 0) goTo(current - 1); }
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const ss = s % 60;
+    return `${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+  }
+
+  function updateTimerDisplay() {
+    document.getElementById('timer-display').textContent = formatTime(timerSecs);
+    const pct = ((TOTAL_SECS - timerSecs) / TOTAL_SECS) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    if (timerSecs <= 30) {
+      document.getElementById('timer-display').style.color = '#e05';
+    } else if (timerSecs <= 60) {
+      document.getElementById('timer-display').style.color = '#f90';
+    }
+  }
+
+  function toggleTimer() {
+    const btn = document.getElementById('timer-toggle');
+    if (!timerRunning) {
+      timerRunning = true;
+      btn.textContent = '⏸ Pausar';
+      btn.classList.add('running');
+      timerInterval = setInterval(() => {
+        if (timerSecs <= 0) {
+          clearInterval(timerInterval);
+          timerRunning = false;
+          btn.textContent = '⏰ Tiempo agotado';
+          btn.classList.remove('running');
+          return;
+        }
+        timerSecs--;
+        updateTimerDisplay();
+      }, 1000);
+    } else {
+      timerRunning = false;
+      clearInterval(timerInterval);
+      btn.textContent = '▶ Continuar';
+      btn.classList.remove('running');
+    }
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+
+  // Stage click = next
+  document.getElementById('stage').addEventListener('click', e => {
+    if (e.target.tagName === 'BUTTON') return;
+    next();
+  });
+
+  // Init
+  goTo(0);
+  updateTimerDisplay();
+</script>
+</body>
+</html>
