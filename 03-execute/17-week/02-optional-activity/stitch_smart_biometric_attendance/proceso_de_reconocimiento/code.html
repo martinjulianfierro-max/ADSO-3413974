@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Registro Biométrico - S.I.A.B.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#434655",
+                        "surface-tint": "#0053db",
+                        "surface-container-high": "#e7e7f3",
+                        "on-primary-fixed": "#00174b",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "primary-fixed": "#dbe1ff",
+                        "outline": "#737686",
+                        "primary-container": "#2563eb",
+                        "surface-container-highest": "#e1e2ed",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2e3039",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#faf8ff",
+                        "tertiary": "#006229",
+                        "secondary-container": "#dee0e2",
+                        "background": "#faf8ff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "inverse-on-surface": "#f0f0fb",
+                        "surface-container-low": "#f3f3fe",
+                        "on-tertiary-fixed": "#002109",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#007e37",
+                        "surface-container": "#ededf9",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#b4c5ff",
+                        "on-primary-container": "#eeefff",
+                        "on-tertiary-container": "#c1ffc5",
+                        "secondary-fixed-dim": "#c5c6c8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#191b23",
+                        "on-primary": "#ffffff",
+                        "surface": "#faf8ff",
+                        "on-surface": "#191b23",
+                        "on-secondary-fixed-variant": "#444749",
+                        "on-secondary-container": "#606365",
+                        "tertiary-fixed": "#6bff8f",
+                        "secondary": "#5c5f60",
+                        "on-secondary-fixed": "#191c1e",
+                        "surface-variant": "#e1e2ed",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#c3c6d7",
+                        "primary": "#004ac6",
+                        "surface-dim": "#d9d9e5",
+                        "tertiary-fixed-dim": "#4ae176",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#e1e2e4",
+                        "on-tertiary-fixed-variant": "#005321"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "margin-mobile": "16px",
+                        "md": "16px",
+                        "margin-desktop": "40px",
+                        "xl": "32px",
+                        "xxl": "48px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "title-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .scan-frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-color, #004ac6);
+            box-shadow: 0 0 20px rgba(0, 74, 198, 0.3);
+            animation: pulse-border 2s infinite;
+        }
+
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, transparent, #004ac6, transparent);
+            animation: scan 2s infinite linear;
+        }
+
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(0, 74, 198, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(0, 74, 198, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 74, 198, 0); }
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .face-mesh {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(0, 74, 198, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 74, 198, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            border-radius: 50%;
+            opacity: 0.5;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 70%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 70%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background h-screen w-screen overflow-hidden flex flex-col md:flex-row">
+<!-- NO NAVIGATION SHELL REQUIRED AS PER "Linear/Transactional" RULE -->
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col md:flex-row h-full w-full">
+<!-- Left: Camera Preview (Scanning Area) -->
+<section class="flex-1 relative bg-surface-container-highest overflow-hidden flex items-center justify-center min-h-[512px] md:min-h-screen">
+<!-- Simulated Camera Feed -->
+<div class="absolute inset-0 bg-secondary-fixed-dim" data-alt="A simulated, blurred view from a front-facing camera looking out towards a bright, modern entryway. The scene is brightly lit with natural light, featuring a minimalist aesthetic with clean lines and soft shadows. The overall tone is professional, secure, and slightly abstract, focusing on a clean, light-mode environment suitable for an institutional setting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDmUQ-oaFrv5Ky0UpOcSqmC0GYFZ4m8c7zoBr36aot2V9gawmxIDnkI1daRXpAe6LkCQ3QIDHchs7S_abPG6I41seVPTRcnorlUhUYnpSOV6P8dNhF8ns4IHMu_53qTb1AcgQOxpc27m4jxB0pre5aXkCIQNeihN5kVfgfdMuJQYxzha1fr9sj_sds6qxCJdmrUatEVIQB-BKXbmukBW_VeBhXc-OdVilT2ZnkTA5keNZVd7THsdP5K1UwVV5-MLybGmqf8p5-iHV0')"></div>
+<!-- Biometric Overlay -->
+<div class="scan-frame" id="scanFrame">
+<div class="face-mesh"></div>
+<div class="scan-line"></div>
+</div>
+<!-- Contextual Hint -->
+<div class="absolute bottom-margin-desktop left-1/2 -translate-x-1/2 bg-surface/80 backdrop-blur-sm px-xl py-sm rounded-full shadow-md text-center">
+<span class="font-label-md text-label-md text-on-surface">Ubique su rostro dentro del marco</span>
+</div>
+</section>
+<!-- Right: Dynamic Status Panel -->
+<section class="w-full md:w-[480px] bg-surface shadow-[-10px_0_30px_rgba(0,0,0,0.05)] flex flex-col p-margin-desktop z-10">
+<!-- Header -->
+<header class="mb-xxl text-center">
+<h1 class="font-display-lg text-title-md font-bold text-primary mb-sm tracking-tight">S.I.A.B.</h1>
+<p class="font-body-md text-body-md text-secondary">Sistema Inteligente de Asistencia Biométrica</p>
+</header>
+<!-- Dynamic State Container -->
+<div class="flex-1 flex flex-col justify-center gap-lg" id="stateContainer">
+<!-- STATE: SCANNING (Default) -->
+<div class="flex flex-col items-center text-center gap-md" id="stateScanning">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center animate-pulse">
+<span class="material-symbols-outlined text-on-primary-container text-[32px]">face</span>
+</div>
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile text-on-surface mb-xs">Buscando rostro...</h2>
+<p class="font-body-md text-body-md text-secondary">Por favor, mantenga la mirada hacia la cámara.</p>
+</div>
+</div>
+<!-- STATE: SUCCESS (Hidden by default) -->
+<div class="hidden flex-col items-center text-center gap-md" id="stateSuccess">
+<div class="w-16 h-16 rounded-full bg-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-container text-[32px]">check_circle</span>
+</div>
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile text-tertiary mb-xs">Asistencia registrada</h2>
+<p class="font-body-md text-body-md text-secondary">Identidad verificada exitosamente.</p>
+</div>
+<!-- Trainee Data Card -->
+<div class="w-full bg-surface-container-low rounded-xl p-md mt-lg shadow-sm border border-surface-variant text-left">
+<div class="flex items-center gap-md mb-md">
+<div class="w-12 h-12 rounded-full bg-surface-variant overflow-hidden" data-alt="A professional headshot of a young adult student looking directly at the camera with a neutral, pleasant expression. The background is a clean, solid light grey. The lighting is soft, even, and flattering, resembling a high-quality ID photo. The student is wearing a simple, modern collared shirt." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDuddSADMBDO3AQUofSYLAKPBZhD3Sja4oW0XHF7fGsSlcfQVnU3g9uLM1SC21IzFG48x2lewefLesKGtE2iZC2741gWNHR_TCxza1c5vpAIM7WfNIq4qDf11pmtBxuxsyTUcJzFwMWJFAAqEEv_Ts8WpbRO5Naz4QRC_VCOR59OoOANXt-U3pxehESuWUtRPa33K_pJkqQHLbydOre1hQRh5ICi_sAqCY-3jVfYfLIeXfs_BqRjDyvNmhj__PfyN05Wpu9Dp7i08c')"></div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">Ana López Ramírez</h3>
+<p class="font-label-md text-label-md text-secondary">ID: 1029384756</p>
+</div>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between border-b border-surface-variant pb-xs">
+<span class="font-label-md text-label-md text-secondary">Programa:</span>
+<span class="font-label-md text-label-md text-on-surface font-medium">Desarrollo de Software</span>
+</div>
+<div class="flex justify-between border-b border-surface-variant pb-xs">
+<span class="font-label-md text-label-md text-secondary">Ficha:</span>
+<span class="font-label-md text-label-md text-on-surface font-medium">2556789</span>
+</div>
+<div class="flex justify-between border-b border-surface-variant pb-xs">
+<span class="font-label-md text-label-md text-secondary">Fecha:</span>
+<span class="font-label-md text-label-md text-on-surface font-medium">24 Oct 2023</span>
+</div>
+<div class="flex justify-between">
+<span class="font-label-md text-label-md text-secondary">Hora:</span>
+<span class="font-label-md text-label-md text-tertiary font-bold">07:58 AM</span>
+</div>
+</div>
+</div>
+<button class="mt-xl w-full bg-primary text-on-primary font-label-md text-label-md py-md rounded-lg hover:bg-primary/90 transition-colors shadow-sm active:shadow-none">
+                        Finalizar
+                    </button>
+</div>
+<!-- STATE: ERROR (Hidden by default) -->
+<div class="hidden flex-col items-center text-center gap-md" id="stateError">
+<div class="w-16 h-16 rounded-full bg-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-error text-[32px]">warning</span>
+</div>
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile text-error mb-xs">No fue posible verificar</h2>
+<p class="font-body-md text-body-md text-secondary">Asegúrese de estar bien iluminado y sin accesorios que cubran su rostro.</p>
+</div>
+<div class="w-full flex flex-col gap-sm mt-lg">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-md rounded-lg hover:bg-primary/90 transition-colors shadow-sm active:shadow-none" onclick="resetScan()">
+                            Reintentar
+                        </button>
+<button class="w-full border border-outline text-primary font-label-md text-label-md py-md rounded-lg hover:bg-surface-container-low transition-colors">
+                            Solicitar ayuda manual
+                        </button>
+</div>
+</div>
+</div>
+<!-- Controls for demonstration purposes (Normally hidden in production) -->
+<div class="mt-auto pt-xl border-t border-surface-variant flex justify-center gap-xs opacity-50 hover:opacity-100 transition-opacity">
+<button class="text-xs bg-surface-variant px-2 py-1 rounded" onclick="showState('Scanning')">Scan</button>
+<button class="text-xs bg-surface-variant px-2 py-1 rounded" onclick="showState('Success')">Success</button>
+<button class="text-xs bg-surface-variant px-2 py-1 rounded" onclick="showState('Error')">Error</button>
+</div>
+</section>
+</main>
+<script>
+        // Simple state management for demonstration
+        function showState(stateName) {
+            document.getElementById('stateScanning').classList.add('hidden');
+            document.getElementById('stateScanning').classList.remove('flex');
+            document.getElementById('stateSuccess').classList.add('hidden');
+            document.getElementById('stateSuccess').classList.remove('flex');
+            document.getElementById('stateError').classList.add('hidden');
+            document.getElementById('stateError').classList.remove('flex');
+            
+            const scanFrame = document.getElementById('scanFrame');
+            
+            if (stateName === 'Scanning') {
+                document.getElementById('stateScanning').classList.remove('hidden');
+                document.getElementById('stateScanning').classList.add('flex');
+                scanFrame.style.setProperty('--primary-color', '#004ac6');
+                scanFrame.style.animation = 'pulse-border 2s infinite';
+            } else if (stateName === 'Success') {
+                document.getElementById('stateSuccess').classList.remove('hidden');
+                document.getElementById('stateSuccess').classList.add('flex');
+                scanFrame.style.setProperty('--primary-color', '#006229');
+                scanFrame.style.animation = 'none';
+                scanFrame.style.boxShadow = '0 0 0 4px #006229';
+            } else if (stateName === 'Error') {
+                document.getElementById('stateError').classList.remove('hidden');
+                document.getElementById('stateError').classList.add('flex');
+                scanFrame.style.setProperty('--primary-color', '#ba1a1a');
+                scanFrame.style.animation = 'none';
+                scanFrame.style.boxShadow = '0 0 0 4px #ba1a1a';
+            }
+        }
+
+        function resetScan() {
+            showState('Scanning');
+            // Simulate processing
+            setTimeout(() => {
+                showState(Math.random() > 0.5 ? 'Success' : 'Error');
+            }, 3000);
+        }
+        
+        // Start simulation on load
+        setTimeout(() => {
+            showState('Success');
+        }, 4000);
+    </script>
+</body></html>

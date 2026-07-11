@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Panel del Instructor - SENA</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#434655",
+                        "surface-tint": "#0053db",
+                        "surface-container-high": "#e7e7f3",
+                        "on-primary-fixed": "#00174b",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "primary-fixed": "#dbe1ff",
+                        "outline": "#737686",
+                        "primary-container": "#2563eb",
+                        "surface-container-highest": "#e1e2ed",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2e3039",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#faf8ff",
+                        "tertiary": "#006229",
+                        "secondary-container": "#dee0e2",
+                        "background": "#faf8ff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "inverse-on-surface": "#f0f0fb",
+                        "surface-container-low": "#f3f3fe",
+                        "on-tertiary-fixed": "#002109",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#007e37",
+                        "surface-container": "#ededf9",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#b4c5ff",
+                        "on-primary-container": "#eeefff",
+                        "on-tertiary-container": "#c1ffc5",
+                        "secondary-fixed-dim": "#c5c6c8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#191b23",
+                        "on-primary": "#ffffff",
+                        "surface": "#faf8ff",
+                        "on-surface": "#191b23",
+                        "on-secondary-fixed-variant": "#444749",
+                        "on-secondary-container": "#606365",
+                        "tertiary-fixed": "#6bff8f",
+                        "secondary": "#5c5f60",
+                        "on-secondary-fixed": "#191c1e",
+                        "surface-variant": "#e1e2ed",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#c3c6d7",
+                        "primary": "#004ac6",
+                        "surface-dim": "#d9d9e5",
+                        "tertiary-fixed-dim": "#4ae176",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#e1e2e4",
+                        "on-tertiary-fixed-variant": "#005321"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "margin-mobile": "16px",
+                        "md": "16px",
+                        "margin-desktop": "40px",
+                        "xl": "32px",
+                        "xxl": "48px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "title-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .shadow-level-1 { box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05); }
+        .shadow-level-2 { box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.08); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md h-screen overflow-hidden flex">
+<!-- TopNavBar (Mobile Only) -->
+<header class="md:hidden sticky top-0 z-50 flex justify-between items-center px-margin-mobile py-4 w-full bg-surface dark:bg-on-background shadow-sm w-full absolute top-0 left-0">
+<div class="font-display-lg text-title-md font-bold text-primary dark:text-primary-fixed-dim">S.I.A.B.</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim cursor-pointer hover:bg-surface-container-high dark:hover:bg-on-surface-variant transition-colors p-2 rounded-full">notifications</span>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim cursor-pointer hover:bg-surface-container-high dark:hover:bg-on-surface-variant transition-colors p-2 rounded-full">settings</span>
+<img alt="Instructor profile" class="w-8 h-8 rounded-full object-cover" data-alt="A small, professional portrait photograph of an instructor, head and shoulders visible against a neutral grey background. The lighting is bright and even, conveying a clean, modern, and trustworthy aesthetic suitable for an enterprise education platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIqpEeRLf3im9MlKzcEer_5mzB9fXCxWTbG4d0V9NCg1jHQOzae1g5_jHDFAYCqZBBBsrXqsiL3YFIsTPaQLETVLOv_nZjB_cAdOioqpCWQpzW6HQ2mOW6B1EDKVRtMHPdASCn_jAt2yel0NB7brYsbIbaN0NqYrVAv_wjj69Fa5zmEeQwyIpev0AzJ6diXJ0-y_QOOvSUOfKELuRoqmUJ4mWCPH9aQXlXLU7uHD-m7TPIch4Wsv5DbPLSN1xQvSpJFqhaxWBi0Eo"/>
+</div>
+</header>
+<!-- SideNavBar (Desktop Only) -->
+<nav class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low dark:bg-inverse-surface shadow-md p-4 gap-4 z-40">
+<div class="flex items-center gap-3 mb-6 px-2">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<div class="font-display-lg text-headline-lg-mobile font-black text-primary dark:text-primary-fixed-dim">S.I.A.B.</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Instructor Panel</div>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-2">
+<!-- Active Nav Item: Home -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl font-bold scale-98 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span>Home</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-on-surface-variant rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">person_search</span>
+<span>Attendance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-on-surface-variant rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-on-surface-variant rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+<span>History</span>
+</a>
+</div>
+<button class="w-full py-3 bg-primary text-on-primary rounded-lg font-label-md text-label-md font-semibold hover:bg-on-primary-fixed-variant transition-colors shadow-sm mb-4">
+            Export Data
+        </button>
+<div class="flex flex-col gap-2 mt-auto border-t border-outline-variant pt-4">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-highest rounded-xl transition-all text-sm" href="#">
+<span class="material-symbols-outlined text-lg">help</span>
+<span>Help</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-error hover:bg-error-container rounded-xl transition-all text-sm" href="#">
+<span class="material-symbols-outlined text-lg">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 h-full overflow-y-auto bg-surface-container-lowest pt-[72px] md:pt-0 pb-20 md:pb-0">
+<!-- Desktop Header Area -->
+<div class="hidden md:flex justify-between items-center px-margin-desktop py-lg bg-surface-container-lowest sticky top-0 z-30">
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-semibold">Panel del Instructor - SENA</h1>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-3 p-1 pr-3 rounded-full border border-outline-variant hover:bg-surface-container-low cursor-pointer transition-colors">
+<img alt="Profile" class="w-8 h-8 rounded-full object-cover" data-alt="A highly detailed close-up portrait of a professional instructor, showing head and shoulders in a well-lit studio environment. The lighting is soft and modern, highlighting a clean and approachable demeanor, set against a blurred, bright office background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlR_-SBOsyMz4X_ZJ-21W-ODcz70wS3fW5XoPBEJ57Bc7BvA6SgzVYcYJywvLg1QnCuhYcjcSsgKihjPYq5wp3AYvbZwmRKLkdi3jzSFRKA1vJZ_edG34SUnbt9nW1l5cAoQQVFYm7afzYgyXyYc-cHRPsGgRrnruEGH9yzL1TpDDq6es-qvut8uhKrAVwOdM0wWsERTHEnHCYNJBOx5srjj6ITROyRYQQuE6XQRCxd1FyHkaDy6igPkAcp-NjhTmAXXdP13kCQDQ"/>
+<span class="font-label-md text-label-md text-on-surface">Instructor</span>
+<span class="material-symbols-outlined text-sm text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Mobile Header Area -->
+<div class="md:hidden px-margin-mobile py-4 mt-2">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-semibold">Panel del Instructor</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">SENA Dashboard</p>
+</div>
+<div class="px-margin-mobile md:px-margin-desktop py-4 md:py-6 flex flex-col gap-lg">
+<!-- Quick Stats Grid (Bento style) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-gutter">
+<!-- Card 1 -->
+<div class="bg-surface rounded-xl p-4 md:p-6 shadow-level-1 flex flex-col justify-between hover:-translate-y-1 transition-transform duration-200">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Aprendices</span>
+<div class="p-2 rounded-lg bg-primary-fixed text-primary">
+<span class="material-symbols-outlined">group</span>
+</div>
+</div>
+<div>
+<span class="font-display-lg text-display-lg text-on-surface">124</span>
+<div class="flex items-center gap-1 mt-1 text-tertiary">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span class="font-label-sm text-label-sm">Registrados hoy</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface rounded-xl p-4 md:p-6 shadow-level-1 flex flex-col justify-between border-l-4 border-tertiary hover:-translate-y-1 transition-transform duration-200">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-md text-label-md text-on-surface-variant">Presentes</span>
+<div class="p-2 rounded-lg bg-tertiary-container text-on-tertiary-container">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+</div>
+<div>
+<span class="font-display-lg text-display-lg text-on-surface">98</span>
+<div class="flex items-center gap-1 mt-1 text-on-surface-variant">
+<span class="font-label-sm text-label-sm">79% de asistencia</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface rounded-xl p-4 md:p-6 shadow-level-1 flex flex-col justify-between border-l-4 border-secondary hover:-translate-y-1 transition-transform duration-200">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-md text-label-md text-on-surface-variant">Ausentes</span>
+<div class="p-2 rounded-lg bg-surface-container-high text-on-surface-variant">
+<span class="material-symbols-outlined">cancel</span>
+</div>
+</div>
+<div>
+<span class="font-display-lg text-display-lg text-on-surface">15</span>
+<div class="flex items-center gap-1 mt-1 text-on-surface-variant">
+<span class="font-label-sm text-label-sm">12% de ausencia</span>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface rounded-xl p-4 md:p-6 shadow-level-1 flex flex-col justify-between border-l-4 border-[rgb(234,179,8)] hover:-translate-y-1 transition-transform duration-200">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-md text-label-md text-on-surface-variant">Llegadas Tarde</span>
+<div class="p-2 rounded-lg bg-[rgba(234,179,8,0.2)] text-[rgb(161,98,7)]">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+</div>
+<div>
+<span class="font-display-lg text-display-lg text-on-surface">11</span>
+<div class="flex items-center gap-1 mt-1 text-on-surface-variant">
+<span class="font-label-sm text-label-sm">9% retrasos</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Area: Filters and Table -->
+<div class="bg-surface rounded-xl shadow-level-1 p-4 md:p-6 mt-4">
+<!-- Filters Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+<h2 class="font-title-md text-title-md text-on-surface">Asistencias Recientes</h2>
+<div class="flex flex-wrap gap-2 md:gap-3 w-full md:w-auto">
+<!-- Search/Filter Input -->
+<div class="relative flex-1 md:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Buscar aprendiz..." type="text"/>
+</div>
+<!-- Quick Filters -->
+<button class="flex items-center gap-2 px-3 py-2 border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm">calendar_month</span>
+<span class="hidden md:inline">Fecha</span>
+</button>
+<button class="flex items-center gap-2 px-3 py-2 border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm">category</span>
+<span class="hidden md:inline">Programa</span>
+</button>
+<button class="flex items-center gap-2 px-3 py-2 border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+<span class="hidden md:inline">Estado</span>
+</button>
+</div>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant text-on-surface-variant font-label-md text-label-md">
+<th class="pb-3 px-2 font-medium">Nombre del Aprendiz</th>
+<th class="pb-3 px-2 font-medium hidden md:table-cell">Programa</th>
+<th class="pb-3 px-2 font-medium">Hora</th>
+<th class="pb-3 px-2 font-medium">Estado</th>
+<th class="pb-3 px-2 font-medium text-right">Evidencia</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface">
+<!-- Row 1 -->
+<tr class="border-b border-surface-variant hover:bg-surface-container-low transition-colors group">
+<td class="py-4 px-2">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm">MR</div>
+<div>
+<div class="font-medium">Maria Rodriguez</div>
+<div class="text-sm text-on-surface-variant md:hidden">ADSO - Ficha 2712345</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-2 hidden md:table-cell text-on-surface-variant">ADSO - 2712345</td>
+<td class="py-4 px-2">07:55 AM</td>
+<td class="py-4 px-2">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary mr-1.5"></span>
+                                        Presente
+                                    </span>
+</td>
+<td class="py-4 px-2 text-right">
+<button class="p-2 text-primary hover:bg-primary-fixed rounded-lg transition-colors group-hover:visible" title="Ver Evidencia">
+<span class="material-symbols-outlined">photo_camera</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="border-b border-surface-variant hover:bg-surface-container-low transition-colors group">
+<td class="py-4 px-2">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-dim text-on-surface flex items-center justify-center font-bold text-sm">JP</div>
+<div>
+<div class="font-medium">Juan Perez</div>
+<div class="text-sm text-on-surface-variant md:hidden">TPS - Ficha 2845678</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-2 hidden md:table-cell text-on-surface-variant">TPS - 2845678</td>
+<td class="py-4 px-2">-</td>
+<td class="py-4 px-2">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary mr-1.5"></span>
+                                        Ausente
+                                    </span>
+</td>
+<td class="py-4 px-2 text-right">
+<span class="text-on-surface-variant text-sm px-2">-</span>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="border-b border-surface-variant hover:bg-surface-container-low transition-colors group">
+<td class="py-4 px-2">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm">CG</div>
+<div>
+<div class="font-medium">Carlos Gomez</div>
+<div class="text-sm text-on-surface-variant md:hidden">ADSO - Ficha 2712345</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-2 hidden md:table-cell text-on-surface-variant">ADSO - 2712345</td>
+<td class="py-4 px-2 text-error">08:15 AM</td>
+<td class="py-4 px-2">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-[rgba(234,179,8,0.2)] text-[rgb(161,98,7)] font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-[rgb(234,179,8)] mr-1.5"></span>
+                                        Tarde
+                                    </span>
+</td>
+<td class="py-4 px-2 text-right">
+<button class="p-2 text-primary hover:bg-primary-fixed rounded-lg transition-colors group-hover:visible" title="Ver Evidencia">
+<span class="material-symbols-outlined">photo_camera</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-4 flex justify-center">
+<button class="text-primary font-label-md text-label-md hover:underline">Ver más registros</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>
